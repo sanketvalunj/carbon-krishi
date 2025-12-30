@@ -1,18 +1,41 @@
 import 'package:flutter/material.dart';
 
 class CarbonCreditsScreen extends StatelessWidget {
-  const CarbonCreditsScreen({Key? key}) : super(key: key);
+  const CarbonCreditsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final credits = [
-      {'date': 'Dec 25, 2024', 'credits': 15, 'source': 'Trees', 'hash': '0x7a4b...3c2e'},
-      {'date': 'Dec 20, 2024', 'credits': 25, 'source': 'Soil Practices', 'hash': '0x9f5d...8b1a'},
-      {'date': 'Dec 15, 2024', 'credits': 10, 'source': 'Emission Reduction', 'hash': '0x2c8e...6f4d'},
-      {'date': 'Dec 10, 2024', 'credits': 20, 'source': 'Trees', 'hash': '0x4d3a...9e7b'},
+      {
+        'date': 'Dec 25, 2024',
+        'credits': 15,
+        'source': 'Trees',
+        'hash': '0x7a4b...3c2e',
+      },
+      {
+        'date': 'Dec 20, 2024',
+        'credits': 25,
+        'source': 'Soil Practices',
+        'hash': '0x9f5d...8b1a',
+      },
+      {
+        'date': 'Dec 15, 2024',
+        'credits': 10,
+        'source': 'Emission Reduction',
+        'hash': '0x2c8e...6f4d',
+      },
+      {
+        'date': 'Dec 10, 2024',
+        'credits': 20,
+        'source': 'Trees',
+        'hash': '0x4d3a...9e7b',
+      },
     ];
 
-    final totalCredits = credits.fold<int>(0, (sum, item) => sum + (item['credits'] as int));
+    final totalCredits = credits.fold<int>(
+      0,
+      (sum, item) => sum + (item['credits'] as int),
+    );
     final estimatedValue = totalCredits * 75.0;
 
     return Scaffold(
@@ -57,7 +80,10 @@ class CarbonCreditsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
@@ -67,7 +93,7 @@ class CarbonCreditsScreen extends StatelessWidget {
                       children: [
                         const Icon(Icons.currency_rupee, color: Colors.white),
                         Text(
-                          '${estimatedValue.toStringAsFixed(0)}',
+                          estimatedValue.toStringAsFixed(0),
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -79,7 +105,10 @@ class CarbonCreditsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.orange,
                       borderRadius: BorderRadius.circular(12),
@@ -132,7 +161,11 @@ class CarbonCreditsScreen extends StatelessWidget {
                   color: const Color(0xFFE8F5E9),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.eco, color: Color(0xFF2E7D32), size: 32),
+                child: const Icon(
+                  Icons.eco,
+                  color: Color(0xFF2E7D32),
+                  size: 32,
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(

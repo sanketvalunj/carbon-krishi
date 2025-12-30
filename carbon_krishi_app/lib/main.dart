@@ -6,7 +6,7 @@ void main() {
 }
 
 class CarbonKrishiApp extends StatelessWidget {
-  const CarbonKrishiApp({Key? key}) : super(key: key);
+  const CarbonKrishiApp({super.key});
 
   @override
   Widget build(BuildContext context) {

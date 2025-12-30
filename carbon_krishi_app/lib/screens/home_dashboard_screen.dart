@@ -7,8 +7,8 @@ import 'profile_screen.dart';
 
 class HomeDashboardScreen extends StatefulWidget {
   final String farmerName;
-  
-  const HomeDashboardScreen({Key? key, required this.farmerName}) : super(key: key);
+
+  const HomeDashboardScreen({super.key, required this.farmerName});
 
   @override
   State<HomeDashboardScreen> createState() => _HomeDashboardScreenState();
@@ -23,15 +23,16 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   double? _estimatedValue;
   double? _farmSize;
   int? _treesPlanted;
+  double? _ndviValue;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
+        title: const Row(
           children: [
-            const Icon(Icons.eco, color: Colors.white),
-            const SizedBox(width: 8),
+            Icon(Icons.eco, color: Colors.white),
+            SizedBox(width: 8),
             Text('CarbonKrishi', style: TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
@@ -53,17 +54,25 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             child: ElevatedButton.icon(
               icon: const Icon(Icons.edit_note),
               label: const Text('Add Farm Data'),
-              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF2E7D32)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF2E7D32),
+              ),
               onPressed: () async {
                 final result = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const FarmDataEntryScreen()),
+                  MaterialPageRoute(
+                    builder: (_) => const FarmDataEntryScreen(),
+                  ),
                 );
                 if (result != null && mounted) {
                   setState(() {
                     _farmSize = (result['farmSize'] as double?) ?? 0.0;
                     _treesPlanted = (result['treesPlanted'] as int?) ?? 0;
-                    _carbonScore = (_farmSize ?? 0.0) * 0.5 + (_treesPlanted ?? 0) * 0.02;
+                    _ndviValue = (result['ndvi'] as double?) ?? 0.0;
+                    _carbonScore =
+                        (_farmSize ?? 0.0) * 0.5 +
+                        (_treesPlanted ?? 0) * 0.02 +
+                        (_ndviValue ?? 0.0) * 2.0;
                     _totalCredits = ((_carbonScore ?? 0.0) * 10).toInt();
                     _estimatedValue = (_totalCredits ?? 0) * 75.0;
                     _selectedIndex = 0; // return to home after saving
@@ -86,10 +95,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
           });
         },
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_circle_outline),
             label: 'Add Data',
@@ -98,10 +104,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             icon: Icon(Icons.monetization_on),
             label: 'Credits',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         type: BottomNavigationBarType.fixed,
       ),
@@ -165,7 +168,9 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        _carbonScore != null ? _carbonScore!.toStringAsFixed(2) : '--',
+                        _carbonScore != null
+                            ? _carbonScore!.toStringAsFixed(2)
+                            : '--',
                         style: const TextStyle(
                           fontSize: 48,
                           fontWeight: FontWeight.bold,
@@ -205,13 +210,19 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                   onTap: () async {
                     final result = await Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const FarmDataEntryScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => const FarmDataEntryScreen(),
+                      ),
                     );
                     if (result != null && mounted) {
                       setState(() {
                         _farmSize = (result['farmSize'] as double?) ?? 0.0;
                         _treesPlanted = (result['treesPlanted'] as int?) ?? 0;
-                        _carbonScore = (_farmSize ?? 0.0) * 0.5 + (_treesPlanted ?? 0) * 0.02;
+                        _ndviValue = (result['ndvi'] as double?) ?? 0.0;
+                        _carbonScore =
+                            (_farmSize ?? 0.0) * 0.5 +
+                            (_treesPlanted ?? 0) * 0.02 +
+                            (_ndviValue ?? 0.0) * 2.0;
                         _totalCredits = ((_carbonScore ?? 0.0) * 10).toInt();
                         _estimatedValue = (_totalCredits ?? 0) * 75.0;
                       });
@@ -225,7 +236,9 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const CarbonCreditsScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => const CarbonCreditsScreen(),
+                      ),
                     );
                   },
                 ),
@@ -236,7 +249,9 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const PhotoUploadScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => const PhotoUploadScreen(),
+                      ),
                     );
                   },
                 ),
@@ -248,7 +263,9 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => AIRecommendationsScreen(farmerName: widget.farmerName),
+                        builder: (_) => AIRecommendationsScreen(
+                          farmerName: widget.farmerName,
+                        ),
                       ),
                     );
                   },
@@ -277,11 +294,23 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    _buildStatRow(Icons.stars, 'Total Credits Earned', '${_totalCredits ?? 0} credits'),
+                    _buildStatRow(
+                      Icons.stars,
+                      'Total Credits Earned',
+                      '${_totalCredits ?? 0} credits',
+                    ),
                     const Divider(height: 24),
-                    _buildStatRow(Icons.currency_rupee, 'Estimated Value', '₹${(_estimatedValue ?? 0).toStringAsFixed(0)}'),
+                    _buildStatRow(
+                      Icons.currency_rupee,
+                      'Estimated Value',
+                      '₹${(_estimatedValue ?? 0).toStringAsFixed(0)}',
+                    ),
                     const Divider(height: 24),
-                    _buildStatRow(Icons.trending_up, 'This Month', '+15 credits'),
+                    _buildStatRow(
+                      Icons.trending_up,
+                      'This Month',
+                      '+15 credits',
+                    ),
                   ],
                 ),
               ),
@@ -309,8 +338,14 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                     ),
                     const SizedBox(height: 16),
                     _buildActivityItem('20 trees planted', '2 days ago'),
-                    _buildActivityItem('Switched to no-till farming', '1 week ago'),
-                    _buildActivityItem('Solar irrigation installed', '2 weeks ago'),
+                    _buildActivityItem(
+                      'Switched to no-till farming',
+                      '1 week ago',
+                    ),
+                    _buildActivityItem(
+                      'Solar irrigation installed',
+                      '2 weeks ago',
+                    ),
                   ],
                 ),
               ),
@@ -371,10 +406,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         Expanded(
           child: Text(
             label,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color(0xFF757575),
-            ),
+            style: const TextStyle(fontSize: 14, color: Color(0xFF757575)),
           ),
         ),
         Text(
@@ -406,18 +438,12 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
           Expanded(
             child: Text(
               title,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Color(0xFF212121),
-              ),
+              style: const TextStyle(fontSize: 14, color: Color(0xFF212121)),
             ),
           ),
           Text(
             time,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Color(0xFF757575),
-            ),
+            style: const TextStyle(fontSize: 12, color: Color(0xFF757575)),
           ),
         ],
       ),

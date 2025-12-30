@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'registration_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({Key? key}) : super(key: key);
+  const OnboardingScreen({super.key});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -130,11 +130,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               color: content.color.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              content.icon,
-              size: 100,
-              color: content.color,
-            ),
+            child: Icon(content.icon, size: 100, color: content.color),
           ),
           const SizedBox(height: 48),
           Text(

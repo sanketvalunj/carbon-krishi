@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'home_dashboard_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({Key? key}) : super(key: key);
+  const RegistrationScreen({super.key});
 
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
@@ -14,7 +14,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _phoneController = TextEditingController();
   final _nameController = TextEditingController();
   final _farmSizeController = TextEditingController();
-  
+
   String _selectedLanguage = 'English';
   String _selectedVillage = 'Select Village';
   bool _isLoading = false;
@@ -43,7 +43,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               selected: true,
               onSelected: (selected) {
                 setState(() {
-                  _selectedLanguage = _selectedLanguage == 'English' ? 'हिंदी' : 'English';
+                  _selectedLanguage = _selectedLanguage == 'English'
+                      ? 'हिंदी'
+                      : 'English';
                 });
               },
               selectedColor: const Color(0xFF66BB6A),
@@ -72,10 +74,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 const SizedBox(height: 8),
                 const Text(
                   'Register to start earning carbon credits',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Color(0xFF757575),
-                  ),
+                  style: TextStyle(fontSize: 16, color: Color(0xFF757575)),
                 ),
                 const SizedBox(height: 40),
 
@@ -170,10 +169,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   child: Text(
                     'By registering, you agree to our\nTerms & Conditions',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF757575),
-                    ),
+                    style: TextStyle(fontSize: 12, color: Color(0xFF757575)),
                   ),
                 ),
               ],
@@ -227,7 +223,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
             filled: true,
             fillColor: const Color(0xFFF5F5F5),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ),
           ),
           style: const TextStyle(fontSize: 16),
         ),
@@ -255,19 +254,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          value: value,
+          initialValue: value,
           items: items.map((item) {
-            return DropdownMenuItem(
-              value: item,
-              child: Text(item),
-            );
+            return DropdownMenuItem(value: item, child: Text(item));
           }).toList(),
           onChanged: onChanged,
           decoration: InputDecoration(
             prefixIcon: Icon(icon, color: const Color(0xFF2E7D32)),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             filled: true,
             fillColor: const Color(0xFFF5F5F5),
           ),
@@ -277,7 +271,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   Future<void> _handleRegistration() async {
-    if (_formKey.currentState!.validate() && _selectedVillage != 'Select Village') {
+    if (_formKey.currentState!.validate() &&
+        _selectedVillage != 'Select Village') {
       setState(() {
         _isLoading = true;
       });
@@ -288,16 +283,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (_) => HomeDashboardScreen(
-              farmerName: _nameController.text,
-            ),
+            builder: (_) =>
+                HomeDashboardScreen(farmerName: _nameController.text),
           ),
         );
       }
     } else if (_selectedVillage == 'Select Village') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a village')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please select a village')));
     }
   }
 
