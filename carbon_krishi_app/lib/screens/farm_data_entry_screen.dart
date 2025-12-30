@@ -356,7 +356,20 @@ class _FarmDataEntryScreenState extends State<FarmDataEntryScreen> with SingleTi
           backgroundColor: Color(0xFF2E7D32),
         ),
       );
-      Navigator.pop(context);
+      // Prepare data to return to caller
+      final data = {
+        'farmSize': _farmSizeController.text.isNotEmpty ? double.tryParse(_farmSizeController.text) ?? 0.0 : 0.0,
+        'cropType': _selectedCrop,
+        'season': _selectedSeason,
+        'fertilizerType': _selectedFertilizer,
+        'fertilizerQty': _fertilizerQtyController.text.isNotEmpty ? double.tryParse(_fertilizerQtyController.text) ?? 0.0 : 0.0,
+        'tilling': _selectedTilling,
+        'irrigation': _selectedIrrigation,
+        'treesPlanted': _treesPlanted,
+        'useCompost': _useCompost,
+      };
+
+      Navigator.pop(context, data);
     }
   }
 

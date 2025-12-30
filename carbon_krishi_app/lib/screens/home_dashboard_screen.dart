@@ -16,11 +16,13 @@ class HomeDashboardScreen extends StatefulWidget {
 
 class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   int _selectedIndex = 0;
-  
-  // Sample data - will be replaced with backend
-  final double carbonScore = 12.5;
-  final int totalCredits = 125;
-  final double estimatedValue = 9375.0;
+
+  // Values populated from user input
+  double? _carbonScore;
+  int? _totalCredits;
+  double? _estimatedValue;
+  double? _farmSize;
+  int? _treesPlanted;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,38 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
           ),
         ],
       ),
-      body: _selectedIndex == 0 ? _buildHomeTab() : _buildProfileTab(),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [
+          _buildHomeTab(),
+          // Launcher for Add Data - opens full entry screen and returns input
+          Center(
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.edit_note),
+              label: const Text('Add Farm Data'),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF2E7D32)),
+              onPressed: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const FarmDataEntryScreen()),
+                );
+                if (result != null && mounted) {
+                  setState(() {
+                    _farmSize = (result['farmSize'] as double?) ?? 0.0;
+                    _treesPlanted = (result['treesPlanted'] as int?) ?? 0;
+                    _carbonScore = (_farmSize ?? 0.0) * 0.5 + (_treesPlanted ?? 0) * 0.02;
+                    _totalCredits = ((_carbonScore ?? 0.0) * 10).toInt();
+                    _estimatedValue = (_totalCredits ?? 0) * 75.0;
+                    _selectedIndex = 0; // return to home after saving
+                  });
+                }
+              },
+            ),
+          ),
+          const CarbonCreditsScreen(),
+          _buildProfileTab(),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         selectedItemColor: const Color(0xFF2E7D32),
@@ -132,7 +165,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        '$carbonScore',
+                        _carbonScore != null ? _carbonScore!.toStringAsFixed(2) : '--',
                         style: const TextStyle(
                           fontSize: 48,
                           fontWeight: FontWeight.bold,
@@ -169,11 +202,20 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                   icon: Icons.edit_note,
                   title: 'Add Farm Data',
                   color: const Color(0xFF2E7D32),
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    final result = await Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => const FarmDataEntryScreen()),
                     );
+                    if (result != null && mounted) {
+                      setState(() {
+                        _farmSize = (result['farmSize'] as double?) ?? 0.0;
+                        _treesPlanted = (result['treesPlanted'] as int?) ?? 0;
+                        _carbonScore = (_farmSize ?? 0.0) * 0.5 + (_treesPlanted ?? 0) * 0.02;
+                        _totalCredits = ((_carbonScore ?? 0.0) * 10).toInt();
+                        _estimatedValue = (_totalCredits ?? 0) * 75.0;
+                      });
+                    }
                   },
                 ),
                 _buildActionCard(
@@ -235,9 +277,9 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    _buildStatRow(Icons.stars, 'Total Credits Earned', '$totalCredits credits'),
+                    _buildStatRow(Icons.stars, 'Total Credits Earned', '${_totalCredits ?? 0} credits'),
                     const Divider(height: 24),
-                    _buildStatRow(Icons.currency_rupee, 'Estimated Value', '₹${estimatedValue.toStringAsFixed(0)}'),
+                    _buildStatRow(Icons.currency_rupee, 'Estimated Value', '₹${(_estimatedValue ?? 0).toStringAsFixed(0)}'),
                     const Divider(height: 24),
                     _buildStatRow(Icons.trending_up, 'This Month', '+15 credits'),
                   ],

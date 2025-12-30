@@ -37,7 +37,7 @@ app.add_middleware(
 
 class FarmerRegistration(BaseModel):
     name: str = Field(..., min_length=2, max_length=255)
-    phone: str = Field(..., regex=r"^\d{10}$")
+    phone: str = Field(..., pattern=r"^\d{10}$")
     village: str
     farm_size: float = Field(..., gt=0)
 
