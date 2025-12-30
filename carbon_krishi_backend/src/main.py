@@ -11,8 +11,11 @@ from pydantic import BaseModel, Field
 from typing import Optional, List
 from datetime import datetime
 from uuid import uuid4
+from .ndvi_engine import NDVISimulator
 import uvicorn
 
+
+ndvi_simulator = NDVISimulator()
 # Initialize FastAPI app
 app = FastAPI(
     title="CarbonKrishi API",
@@ -437,24 +440,26 @@ def get_recommendations(farm_id: str):
 # SATELLITE DATA ENDPOINTS (MOCK)
 # ============================================================================
 
-@app.get("/api/satellite/ndvi")
-def get_ndvi(latitude: float, longitude: float, date: Optional[str] = None):
+@app.get("/api/satellite/ndvi/{farm_id}")
+def get_ndvi(farm_id: str):
     """
-    Get NDVI data for location (mock implementation)
+    Get NDVI data for a registered farm
     """
-    # Mock NDVI data - replace with Google Earth Engine API
-    import random
+    if farm_id not in farms_db:
+        raise HTTPException(status_code=404, detail="Farm not found")
+    
+    farm_data = farms_db[farm_id]["data"]
+    
+    ndvi_result = ndvi_simulator.calculate_ndvi(farm_data)
     
     return {
-        "location": {
-            "latitude": latitude,
-            "longitude": longitude
-        },
-        "date": date or datetime.now().isoformat(),
-        "ndvi": round(random.uniform(0.3, 0.8), 2),
-        "vegetation_health": "Good",
-        "source": "Mock Data (Replace with GEE)"
+        "farm_id": farm_id,
+        "date": ndvi_result["measurement_date"],
+        "ndvi": ndvi_result["ndvi_value"],
+        "health_status": ndvi_result["health_status"],
+        "contributing_factors": ndvi_result["contributing_factors"]
     }
+
 
 # ============================================================================
 # PHOTO UPLOAD ENDPOINTS
