@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String farmerName;
-  
-  const ProfileScreen({Key? key, required this.farmerName}) : super(key: key);
+
+  const ProfileScreen({super.key, required this.farmerName});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,11 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   _buildInfoRow(Icons.landscape, 'Total Area', '5 acres'),
-                  _buildInfoRow(Icons.location_on, 'Village', 'Pimpri, Maharashtra'),
+                  _buildInfoRow(
+                    Icons.location_on,
+                    'Village',
+                    'Pimpri, Maharashtra',
+                  ),
                   _buildInfoRow(Icons.grass, 'Primary Crop', 'Rice'),
                   _buildInfoRow(Icons.park, 'Trees Planted', '75 trees'),
                 ],

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class AIRecommendationsScreen extends StatelessWidget {
   final String farmerName;
-  
-  const AIRecommendationsScreen({Key? key, required this.farmerName}) : super(key: key);
+
+  const AIRecommendationsScreen({super.key, required this.farmerName});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,11 @@ class AIRecommendationsScreen extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.psychology, color: Color(0xFF2E7D32), size: 32),
+                  const Icon(
+                    Icons.psychology,
+                    color: Color(0xFF2E7D32),
+                    size: 32,
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
@@ -53,7 +57,8 @@ class AIRecommendationsScreen extends StatelessWidget {
               context,
               icon: Icons.park,
               title: 'Plant More Trees',
-              description: 'Plant 10 more trees to increase carbon sequestration',
+              description:
+                  'Plant 10 more trees to increase carbon sequestration',
               impact: '+8 credits/year',
               color: const Color(0xFF2E7D32),
             ),
@@ -134,7 +139,10 @@ class AIRecommendationsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFE8F5E9),
                     borderRadius: BorderRadius.circular(20),
@@ -153,9 +161,7 @@ class AIRecommendationsScreen extends StatelessWidget {
                       SnackBar(content: Text('Learn more about $title')),
                     );
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: color,
-                  ),
+                  style: ElevatedButton.styleFrom(backgroundColor: color),
                   child: const Text('Learn More'),
                 ),
               ],

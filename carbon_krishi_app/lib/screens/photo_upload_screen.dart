@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class PhotoUploadScreen extends StatefulWidget {
-  const PhotoUploadScreen({Key? key}) : super(key: key);
+  const PhotoUploadScreen({super.key});
 
   @override
   State<PhotoUploadScreen> createState() => _PhotoUploadScreenState();
@@ -57,7 +57,10 @@ class _PhotoUploadScreenState extends State<PhotoUploadScreen> {
                         Expanded(
                           child: Text(
                             'Pimpri, Maharashtra\n18.6298° N, 73.7997° E',
-                            style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[700],
+                            ),
                           ),
                         ),
                       ],
@@ -69,7 +72,10 @@ class _PhotoUploadScreenState extends State<PhotoUploadScreen> {
                         const SizedBox(width: 12),
                         Text(
                           DateTime.now().toString().substring(0, 16),
-                          style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[700],
+                          ),
                         ),
                       ],
                     ),
@@ -150,9 +156,9 @@ class _PhotoUploadScreenState extends State<PhotoUploadScreen> {
         children: [
           Expanded(
             child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFE8F5E9),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              decoration: const BoxDecoration(
+                color: Color(0xFFE8F5E9),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
               ),
               child: Center(
                 child: Icon(
@@ -190,8 +196,8 @@ class _PhotoUploadScreenState extends State<PhotoUploadScreen> {
         'time': DateTime.now().toString().substring(11, 16),
       });
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$type photo captured! 📸')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('$type photo captured! 📸')));
   }
 }

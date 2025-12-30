@@ -3,13 +3,14 @@ import 'dart:async';
 import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
@@ -22,13 +23,15 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       duration: const Duration(milliseconds: 1500),
     );
 
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
-    );
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
-    _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.elasticOut),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 0.5,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
 
     _controller.forward();
 
@@ -49,14 +52,11 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              const Color(0xFF66BB6A),
-              const Color(0xFFFFFFFF),
-            ],
+            colors: [Color(0xFF66BB6A), Color(0xFFFFFFFF)],
           ),
         ),
         child: Center(
@@ -89,7 +89,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                     ),
                   ),
                   const SizedBox(height: 24),
-                  
+
                   // App Name
                   ShaderMask(
                     shaderCallback: (bounds) => const LinearGradient(
@@ -106,7 +106,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                     ),
                   ),
                   const SizedBox(height: 8),
-                  
+
                   // Tagline
                   const Text(
                     'Grow Green, Earn Green',
@@ -117,7 +117,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                     ),
                   ),
                   const SizedBox(height: 4),
-                  
+
                   // By NexAi
                   const Text(
                     'by NexAi',
@@ -127,12 +127,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       fontStyle: FontStyle.italic,
                     ),
                   ),
-                  
+
                   const SizedBox(height: 60),
-                  
+
                   // Loading Indicator
                   const CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF2E7D32)),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Color(0xFF2E7D32),
+                    ),
                   ),
                 ],
               ),
