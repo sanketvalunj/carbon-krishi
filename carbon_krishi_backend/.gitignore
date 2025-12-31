@@ -1,0 +1,13 @@
+# secrets
+.env
+
+# node
+node_modules/
+package-lock.json
+
+# hardhat
+artifacts/
+cache/
+
+# misc
+.DS_Store
