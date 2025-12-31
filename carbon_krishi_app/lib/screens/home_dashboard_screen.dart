@@ -3,6 +3,7 @@ import 'farm_data_entry_screen.dart';
 import 'carbon_credits_screen.dart';
 import 'photo_upload_screen.dart';
 import 'ai_recommendations_screen.dart';
+import 'carbon_protfolio/carbon_protfolio.dart';
 import 'profile_screen.dart';
 
 class HomeDashboardScreen extends StatefulWidget {
@@ -42,6 +43,17 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
           IconButton(
             icon: const Icon(Icons.notifications_outlined),
             onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProfileScreen(farmerName: widget.farmerName),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -104,7 +116,10 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             icon: Icon(Icons.monetization_on),
             label: 'Credits',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.eco),
+            label: 'Carbon Portfolio',
+          ),
         ],
         type: BottomNavigationBarType.fixed,
       ),
@@ -359,7 +374,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   }
 
   Widget _buildProfileTab() {
-    return ProfileScreen(farmerName: widget.farmerName);
+    return const CarbonPortfolio();
   }
 
   Widget _buildActionCard({

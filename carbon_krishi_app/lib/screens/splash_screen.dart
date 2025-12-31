@@ -5,6 +5,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:carbon_krishi_app/routes/app_routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:carbon_krishi_app/services/location_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,7 +31,6 @@ class _SplashScreenState extends State<SplashScreen>
     )..repeat();
 
     _fadeAnimation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
-
     _loaderRotation = Tween<double>(begin: 0, end: 1).animate(_controller);
 
     _initAndNavigate();
@@ -38,9 +39,7 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> _initAndNavigate() async {
     try {
       await _prepareGpsServices().timeout(const Duration(seconds: 6));
-    } catch (_) {
-      // ignore errors/timeouts
-    }
+    } catch (_) {}
 
     if (!mounted) return;
     Navigator.of(context).pushReplacementNamed(AppRoutes.registration);
@@ -49,9 +48,7 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> _prepareGpsServices() async {
     try {
       final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        return;
-      }
+      if (!serviceEnabled) return;
 
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
@@ -64,6 +61,13 @@ class _SplashScreenState extends State<SplashScreen>
 
       final pos = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
+      );
+
+      // ✅ ADD: Save readable location to LocationService
+      final locService = context.read<LocationService>();
+      locService.setDisplayAddress(
+        'Lat ${pos.latitude.toStringAsFixed(4)}, '
+        'Lng ${pos.longitude.toStringAsFixed(4)}',
       );
 
       final backendBase = Uri.parse('http://127.0.0.1:8000');
@@ -81,16 +85,18 @@ class _SplashScreenState extends State<SplashScreen>
         final prefs = await SharedPreferences.getInstance();
         await prefs.setDouble('last_latitude', pos.latitude);
         await prefs.setDouble('last_longitude', pos.longitude);
+
         if (data.containsKey('ndvi')) {
           final ndvi = (data['ndvi'] is num)
               ? (data['ndvi'] as num).toDouble()
               : double.tryParse(data['ndvi'].toString()) ?? 0.0;
           await prefs.setDouble('last_ndvi', ndvi);
         }
+
         await prefs.setString('last_ndvi_payload', jsonEncode(data));
       }
     } catch (e) {
-      // swallow any errors
+      // swallow errors
     }
   }
 
@@ -120,7 +126,6 @@ class _SplashScreenState extends State<SplashScreen>
                 FadeTransition(
                   opacity: _fadeAnimation,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         width: 96,
@@ -143,7 +148,6 @@ class _SplashScreenState extends State<SplashScreen>
                           fontSize: 26,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
-                          letterSpacing: 0.4,
                         ),
                       ),
                       const SizedBox(height: 6),
@@ -164,16 +168,16 @@ class _SplashScreenState extends State<SplashScreen>
                         height: 18,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white,
-                          ),
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
                       ),
                     ),
                     const SizedBox(height: 12),
                     const Text(
                       'Preparing GPS services...',
-                      style: TextStyle(fontSize: 12, color: Colors.white70),
+                      style:
+                          TextStyle(fontSize: 12, color: Colors.white70),
                     ),
                   ],
                 ),

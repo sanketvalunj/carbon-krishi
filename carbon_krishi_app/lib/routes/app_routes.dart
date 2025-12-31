@@ -8,6 +8,7 @@ import '../screens/onboarding_carousel/onboarding_carousel.dart';
 import '../screens/registration_screen.dart';
 import '../screens/splash_screen.dart';
 import '../screens/carbon_credits_ledger/carbon_credits_ledger.dart';
+import '../screens/carbon_protfolio/carbon_protfolio.dart';
 
 class AppRoutes {
   static const String initial = '/';
@@ -18,6 +19,7 @@ class AppRoutes {
   static const String homeDashboard = '/home-dashboard';
   static const String photoUpload = '/photo-upload';
   static const String onboardingCarousel = '/onboarding-carousel';
+  static const String carbonPortfolio = '/onboarding-carousel';
 
   static Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashScreen(),
@@ -25,6 +27,7 @@ class AppRoutes {
     carbonCreditsLedger: (context) => const CarbonCreditsLedger(),
     farmDataEntry: (context) => const FarmDataEntryScreen(),
     carbonScoreDisplay: (context) => const CarbonScoreDisplay(),
+    carbonPortfolio: (context) => const CarbonPortfolio(),
 
     // ✅ MOST IMPORTANT FIX
     homeDashboard: (context) {

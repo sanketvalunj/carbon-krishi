@@ -1,6 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 
 import '../../../core/app_export.dart';
+import '../../../widgets/custom_icon_widget.dart';
 
 class MonthlyProgressChartWidget extends StatelessWidget {
   final List<dynamic> monthlyData;

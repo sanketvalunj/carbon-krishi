@@ -134,7 +134,7 @@ class AchievementTimelineWidget extends StatelessWidget {
                   ],
                 ),
               );
-            }),
+            }).toList(),
             const SizedBox(height: 16),
             Center(
               child: TextButton.icon(

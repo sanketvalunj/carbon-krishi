@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 import '../../core/app_export.dart';
-import '../../routes/app_routes.dart'; // ✅ ADD (CHANGE 3 requirement)
+import '../../routes/app_routes.dart'; // ✅ CHANGE: added
 
 /// Onboarding Carousel Screen
 /// Introduces farmers to carbon credit earning through sustainable practices
@@ -22,19 +22,16 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
 
   bool _isHindi = true;
 
-  // ================= CHANGE 1 =================
-  late final String farmerName;
-  // ============================================
+  // ✅ CHANGE 1: farmer name variable
+  late String farmerName;
 
-  // ================= CHANGE 2 =================
+  // ✅ CHANGE 2: read farmer name from route arguments
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     farmerName =
         ModalRoute.of(context)?.settings.arguments as String? ?? 'Farmer';
   }
-  // ============================================
 
   @override
   Widget build(BuildContext context) {
@@ -90,11 +87,10 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
                 ),
               ),
 
-              // ================= CHANGE 3 =================
+              // ✅ CHANGE 3: fixed navigation
               onDone: _navigateToHome,
               onSkip: _navigateToHome,
 
-              // ============================================
               dotsDecorator: DotsDecorator(
                 size: const Size.square(10),
                 activeSize: const Size(24, 10),
@@ -120,14 +116,18 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
                 color: Colors.transparent,
               ),
             ),
-            Positioned(top: 16, right: 16, child: _buildLanguageToggle(theme)),
+            Positioned(
+              top: 16,
+              right: 16,
+              child: _buildLanguageToggle(theme),
+            ),
           ],
         ),
       ),
     );
   }
 
-  // ================= UNCHANGED =================
+  // ===================== UNCHANGED CODE BELOW =====================
 
   List<PageViewModel> _buildPages(ThemeData theme) {
     return [
@@ -138,6 +138,7 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
             : 'Learn how your farming practices impact the environment and discover ways to reduce carbon emissions',
         image: _buildPageImage(
           'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&q=80',
+          'Aerial view of green agricultural fields with crop rows showing sustainable farming practices',
           theme,
         ),
         decoration: _getPageDecoration(theme),
@@ -149,6 +150,7 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
             : 'Adopt sustainable farming practices to earn carbon credits and generate additional income',
         image: _buildPageImage(
           'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80',
+          'Indian farmer holding green plants in fertile soil with coins overlay representing carbon credits',
           theme,
         ),
         decoration: _getPageDecoration(theme),
@@ -160,6 +162,7 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
             : 'Monitor your carbon score, earnings, and environmental contributions on an easy dashboard with AI recommendations',
         image: _buildPageImage(
           'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
+          'Digital dashboard showing charts and graphs with green growth indicators and sustainability metrics',
           theme,
         ),
         decoration: _getPageDecoration(theme),
@@ -167,7 +170,11 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
     ];
   }
 
-  Widget _buildPageImage(String imageUrl, ThemeData theme) {
+  Widget _buildPageImage(
+    String imageUrl,
+    String semanticLabel,
+    ThemeData theme,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: AspectRatio(
@@ -192,10 +199,14 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
       titleTextStyle:
           theme.textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.w700,
+            color: theme.colorScheme.onSurface,
           ) ??
           const TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
       bodyTextStyle:
-          theme.textTheme.bodyLarge?.copyWith(height: 1.5) ??
+          theme.textTheme.bodyLarge?.copyWith(
+            color: theme.colorScheme.onSurface.withAlpha((0.7 * 255).toInt()),
+            height: 1.5,
+          ) ??
           const TextStyle(fontSize: 16),
       titlePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       bodyPadding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
@@ -206,34 +217,54 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
   }
 
   Widget _buildLanguageToggle(ThemeData theme) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          _isHindi = !_isHindi;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.shadow.withAlpha((0.1 * 255).toInt()),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              _isHindi = !_isHindi;
+            });
+          },
           borderRadius: BorderRadius.circular(24),
-        ),
-        child: Row(
-          children: [
-            CustomIconWidget(
-              iconName: 'language',
-              size: 20,
-              color: theme.colorScheme.primary,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomIconWidget(
+                  iconName: 'language',
+                  size: 20,
+                  color: theme.colorScheme.primary,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  _isHindi ? 'EN' : 'हिं',
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 8),
-            Text(_isHindi ? 'EN' : 'हिं', style: theme.textTheme.labelLarge),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  // ================= CHANGE 3 =================
+  // ✅ CHANGE 3: navigation fixed
   void _navigateToHome() {
     Navigator.pushReplacementNamed(
       context,
@@ -241,6 +272,4 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
       arguments: farmerName,
     );
   }
-
-  // ============================================
 }

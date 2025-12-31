@@ -2,6 +2,7 @@
 // For more information about testing with Flutter, please refer to:
 // https://flutter.dev/docs/testing
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:carbon_krishi_app/services/location_service.dart';

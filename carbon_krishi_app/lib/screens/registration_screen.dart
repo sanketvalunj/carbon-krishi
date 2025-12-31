@@ -58,13 +58,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               const SizedBox(height: 16),
 
-              _inputField(controller: _nameController, label: 'Full Name'),
+              _inputField(
+                controller: _nameController,
+                label: 'Full Name',
+              ),
               const SizedBox(height: 16),
 
               DropdownButtonFormField<String>(
                 value: _selectedVillage,
                 items: _villages
-                    .map((v) => DropdownMenuItem(value: v, child: Text(v)))
+                    .map(
+                      (v) => DropdownMenuItem(value: v, child: Text(v)),
+                    )
                     .toList(),
                 onChanged: (v) => setState(() => _selectedVillage = v!),
                 decoration: const InputDecoration(
@@ -104,9 +109,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Future<void> _handleRegistration() async {
     if (!_formKey.currentState!.validate() ||
         _selectedVillage == 'Select Village') {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Please fill all details')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill all details')),
+      );
       return;
     }
 
