@@ -1,4 +1,3 @@
-// photo_upload_screen.dart
 import 'package:flutter/material.dart';
 
 class PhotoUploadScreen extends StatefulWidget {

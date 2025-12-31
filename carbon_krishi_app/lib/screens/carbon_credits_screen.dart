@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../services/location_service.dart';
+import 'carbon_credits_ledger/carbon_credits_ledger.dart';
 
 class CarbonCreditsScreen extends StatelessWidget {
   const CarbonCreditsScreen({super.key});
@@ -42,6 +45,18 @@ class CarbonCreditsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Carbon Credits'),
         backgroundColor: const Color(0xFF2E7D32),
+        actions: [
+          IconButton(
+            tooltip: 'Open Ledger',
+            icon: const Icon(Icons.list_alt),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const CarbonCreditsLedger()),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -224,17 +239,19 @@ class CarbonCreditsScreen extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Credit Details'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _detailRow('Source', credit['source'] as String),
-            _detailRow('Credits', '+${credit['credits']}'),
-            _detailRow('Date', credit['date'] as String),
-            _detailRow('Status', 'Pre-MRV'),
-            _detailRow('Location', 'Pimpri, Maharashtra'),
-            _detailRow('Blockchain Hash', credit['hash'] as String),
-          ],
+        content: Consumer<LocationService>(
+          builder: (context, loc, _) => Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _detailRow('Source', credit['source'] as String),
+              _detailRow('Credits', '+${credit['credits']}'),
+              _detailRow('Date', credit['date'] as String),
+              _detailRow('Status', 'Pre-MRV'),
+              _detailRow('Location', loc.displayAddress ?? 'Location not available'),
+              _detailRow('Blockchain Hash', credit['hash'] as String),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -253,15 +270,26 @@ class CarbonCreditsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 120,
+            width: 100,
             child: Text(
-              '$label:',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              label,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF757575),
+              ),
             ),
           ),
-          Expanded(child: Text(value)),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
+

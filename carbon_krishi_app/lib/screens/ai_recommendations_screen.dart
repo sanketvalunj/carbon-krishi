@@ -8,10 +8,7 @@ class AIRecommendationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('AI Recommendations'),
-        backgroundColor: const Color(0xFF2E7D32),
-      ),
+      appBar: AppBar(title: const Text('AI Recommendations')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(

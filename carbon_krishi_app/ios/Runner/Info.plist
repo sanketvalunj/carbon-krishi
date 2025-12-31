@@ -45,5 +45,20 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	
+	<!-- Location Permissions for geolocator and geocoding plugins -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Carbon Krishi needs your location to calculate carbon credits based on your farm's geographic data and provide accurate recommendations.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Carbon Krishi needs your location to track farm activities and calculate carbon credits even when the app is in the background.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Carbon Krishi needs your location to provide continuous farm monitoring and carbon tracking services.</string>
+	
+	<!-- Camera Permission for photo upload -->
+	<key>NSCameraUsageDescription</key>
+	<string>Carbon Krishi needs camera access to capture farm photos for carbon credit verification.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Carbon Krishi needs photo library access to upload farm photos for carbon credit verification.</string>
 </dict>
 </plist>
+

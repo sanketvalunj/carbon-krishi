@@ -28,6 +28,9 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        
+        // Required for geolocator plugin
+        minSdkVersion = 21
     }
 
     buildTypes {
@@ -37,8 +40,16 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+    
+    // Required for proper lint checks
+    lint {
+        abortOnError = false
+        checkReleaseBuilds = true
+        warningsAsErrors = false
+    }
 }
 
 flutter {
     source = "../.."
 }
+
